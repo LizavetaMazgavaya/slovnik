@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
             return "Greetings from Spring Boot!";
         }
 
+        @GetMapping("/readiness")
+        public String ping() {
+            return "ready";
+        }
+
         @GetMapping("/translate/ru/en")
         public String wordParam(@RequestParam(value = "word", required = false) String word) {
             if (word.equalsIgnoreCase("привет")){
