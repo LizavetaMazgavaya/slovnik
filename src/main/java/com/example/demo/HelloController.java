@@ -1,11 +1,11 @@
 package com.example.demo;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-    @RestController
+@RestController
     public class HelloController {
 
         @GetMapping("/")
@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
             if (word.equalsIgnoreCase("привет")){
                 return "hello";
             }
-            return "incorrect word";
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "слово не найдено"
+            );
         }
 
         @GetMapping("/translate/en/ru")
@@ -31,7 +33,30 @@ import org.springframework.web.bind.annotation.RestController;
             if (word.equalsIgnoreCase("hello")){
                 return "привет";
             }
-            return "incorrect word";
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "word not found"
+            );
         }
+
+        @PostMapping("/translate/ru/en")
+        public String postRuWord (@RequestBody Word postRuWord) {
+            if (postRuWord.getWordForTranslation().equalsIgnoreCase("привет")){
+                return "hello";
+            }
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "слово не найдено"
+            );
+        }
+
+    @PostMapping("/translate/en/ru")
+    public String postEnWord (@RequestBody Word postEnWord) {
+        if (postEnWord.getWordForTranslation().equalsIgnoreCase("hello")){
+            return "привет" ;
+        }
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "word not found"
+        );
+
+    }
 
     }
